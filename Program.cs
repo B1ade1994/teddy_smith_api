@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// https://www.youtube.com/watch?v=SIQhe-yt3mA&list=PL82C6-O4XrHfrGOCPmKmwTO7M0avXyQKc&index=3&ab_channel=TeddySmith
+// https://www.youtube.com/watch?v=FQ5ZPzN1uMQ&list=PL82C6-O4XrHfrGOCPmKmwTO7M0avXyQKc&index=7&ab_channel=TeddySmith
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
