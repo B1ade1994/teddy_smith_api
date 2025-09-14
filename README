@@ -1,0 +1,5 @@
+docker-compose build --no-cache
+docker-compose up --remove-orphans
+
+// запуск миграции
+docker-compose run --remove-orphans web dotnet ef database update

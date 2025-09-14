@@ -1,0 +1,31 @@
+services:
+  web:
+    build: .
+    command: dotnet watch run --no-launch-profile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=teddy_smith_api;Username=postgres;Password=postgres
+      - ASPNETCORE_URLS=http://0.0.0.0:8080
+      - HTTP_PORTS=8080
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - /app/bin
+      - /app/obj
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: teddy_smith_api
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
