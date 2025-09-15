@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("teddy_smith_api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f4ca9c2b8b4803701a526e96c25575fd8ababc90")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ea7e3bab055c871f37a478350a3d521f263f5e3d")]
 [assembly: System.Reflection.AssemblyProductAttribute("teddy_smith_api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("teddy_smith_api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
