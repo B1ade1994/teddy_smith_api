@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using teddy_smith_api.Data;
 using teddy_smith_api.Mappers;
 using teddy_smith_api.Dtos.Stock;
+using teddy_smith_api.Interfaces;
 
 namespace teddy_smith_api.Controllers
 {
@@ -15,15 +16,18 @@ namespace teddy_smith_api.Controllers
   public class StockController : ControllerBase
   {
     private readonly ApplicationDbContext _context;
-    public StockController(ApplicationDbContext context)
+    private readonly IStockRepository _stockRepo;
+
+    public StockController(ApplicationDbContext context, IStockRepository stockRepo)
     {
+      _stockRepo = stockRepo;
       _context = context;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-      var stocks = await _context.Stocks.ToListAsync();
+      var stocks = await _stockRepo.GetAllAsync();
       var stockDto = stocks.Select(s => s.ToStockDto());
 
       return Ok(stockDto);
@@ -32,7 +36,7 @@ namespace teddy_smith_api.Controllers
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
-      var stock = await _context.Stocks.FindAsync(id);
+      var stock = await _stockRepo.GetByIdAsync(id);
 
       if (stock == null)
         return NotFound();
@@ -43,29 +47,19 @@ namespace teddy_smith_api.Controllers
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
     {
-      var stockModel = stockDto.ToStockFromCreateDto();
-      await _context.Stocks.AddAsync(stockModel);
-      await _context.SaveChangesAsync();
-      return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
+      var stock = stockDto.ToStockFromCreateDto();
+      await _stockRepo.CreateAsync(stock);
+      return CreatedAtAction(nameof(GetById), new { id = stock.Id }, stock.ToStockDto());
     }
 
     [HttpPut]
     [Route("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateStockRequestDto stockDto)
     {
-      var stock = await _context.Stocks.FindAsync(id);
+      var stock = await _stockRepo.UpdateAsync(id, stockDto);
 
       if (stock == null)
         return NotFound();
-
-      stock.Symbol = stockDto.Symbol;
-      stock.CompanyName = stockDto.CompanyName;
-      stock.Purchase = stockDto.Purchase;
-      stock.LastDiv = stockDto.LastDiv;
-      stock.Industry = stockDto.Industry;
-      stock.MarketCap = stockDto.MarketCap;
-
-      await _context.SaveChangesAsync();
 
       return Ok(stock.ToStockDto());
     }
@@ -74,13 +68,10 @@ namespace teddy_smith_api.Controllers
     [Route("{id}")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
-      var stock = await _context.Stocks.FindAsync(id);
+      var stock = await _stockRepo.DeleteAsync(id);
 
       if (stock == null)
         return NotFound();
-
-      _context.Stocks.Remove(stock);
-      await _context.SaveChangesAsync();
 
       return NoContent();
     }
