@@ -11,7 +11,7 @@ using teddy_smith_api.Interfaces;
 
 namespace teddy_smith_api.Controllers
 {
-  [Route("api/stock")]
+  [Route("api/stocks")]
   [ApiController]
   public class StockController : ControllerBase
   {

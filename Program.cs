@@ -2,6 +2,7 @@ using teddy_smith_api.Data;
 using Microsoft.EntityFrameworkCore;
 using teddy_smith_api.Interfaces;
 using teddy_smith_api.Repository;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +15,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
   options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+  options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
+
 // репозитории
 builder.Services.AddScoped<IStockRepository, StockRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 var app = builder.Build();
 

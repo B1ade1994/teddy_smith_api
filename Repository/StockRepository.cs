@@ -42,7 +42,7 @@ namespace teddy_smith_api.Repository
 
     public async Task<List<Stock>> GetAllAsync()
     {
-      return await _context.Stocks.ToListAsync();
+      return await _context.Stocks.Include(c => c.Comments).ToListAsync();
     }
 
     public async Task<Stock?> GetByIdAsync(int id)
@@ -52,7 +52,8 @@ namespace teddy_smith_api.Repository
 
     public async Task<Stock?> UpdateAsync(int id, UpdateStockRequestDto stockDto)
     {
-      var stock = await _context.Stocks.FindAsync(id);
+      // Find не работает с Include
+      var stock = await _context.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(i => i.Id == id);
 
       if (stock == null)
         return null;

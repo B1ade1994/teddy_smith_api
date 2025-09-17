@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using teddy_smith_api.Models;
+using teddy_smith_api.Dtos.Comment;
 
 namespace teddy_smith_api.Dtos.Stock
 {
@@ -16,6 +17,6 @@ namespace teddy_smith_api.Dtos.Stock
 
     public string Industry { get; set; } = string.Empty;
     public long MarketCap { get; set; }
-    // public List<Comment> Comments { get; set; } = new List<Comment>();
+    public List<CommentDto> Comments { get; set; }
   }
 }
