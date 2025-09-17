@@ -50,6 +50,11 @@ namespace teddy_smith_api.Repository
       return await _context.Stocks.FindAsync(id);
     }
 
+    public Task<bool> StockExists(int id)
+    {
+      return _context.Stocks.AnyAsync(s => s.Id == id);
+    }
+
     public async Task<Stock?> UpdateAsync(int id, UpdateStockRequestDto stockDto)
     {
       // Find не работает с Include
