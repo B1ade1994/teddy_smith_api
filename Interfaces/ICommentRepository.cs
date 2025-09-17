@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using teddy_smith_api.Dtos.Comment;
 using teddy_smith_api.Models;
 
 namespace teddy_smith_api.Interfaces
@@ -11,5 +12,7 @@ namespace teddy_smith_api.Interfaces
     Task<List<Comment>> GetAllAsync();
     Task<Comment?> GetByIdAsync(int id);
     Task<Comment> CreateAsync(Comment comment);
+    Task<Comment?> UpdateAsync(int id, Comment comment);
+    Task<Comment?> DeleteAsync(int id);
   }
 }

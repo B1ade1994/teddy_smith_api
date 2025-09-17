@@ -54,7 +54,31 @@ namespace teddy_smith_api.Controllers
       var comment = commentDto.ToCommentFromCreate(stockId);
       await _commentRepo.CreateAsync(comment);
 
-      return CreatedAtAction(nameof(GetById), new { id = comment }, comment.ToCommentDto());
+      return CreatedAtAction(nameof(GetById), new { id = comment.Id }, comment.ToCommentDto());
+    }
+
+    [HttpPut]
+    [Route("{id}")]
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentRequestDto commentDto)
+    {
+      var comment = await _commentRepo.UpdateAsync(id, commentDto.ToCommentFromUpdate());
+
+      if (comment == null)
+        return NotFound("Comment not found");
+
+      return Ok(comment.ToCommentDto());
+    }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] int id)
+    {
+      var comment = await _commentRepo.DeleteAsync(id);
+
+      if (comment == null)
+        return NotFound();
+
+      return Ok(comment);
     }
   }
 }
