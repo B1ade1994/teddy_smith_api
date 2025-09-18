@@ -8,6 +8,7 @@ using teddy_smith_api.Data;
 using teddy_smith_api.Mappers;
 using teddy_smith_api.Dtos.Stock;
 using teddy_smith_api.Interfaces;
+using teddy_smith_api.Helpers;
 
 namespace teddy_smith_api.Controllers
 {
@@ -25,9 +26,9 @@ namespace teddy_smith_api.Controllers
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
     {
-      var stocks = await _stockRepo.GetAllAsync();
+      var stocks = await _stockRepo.GetAllAsync(query);
       var stockDto = stocks.Select(s => s.ToStockDto());
 
       return Ok(stockDto);
