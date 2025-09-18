@@ -1,5 +1,10 @@
-docker-compose build --no-cache
-docker-compose up --remove-orphans
+# docker-compose build --no-cache
+# docker-compose up --remove-orphans
 
-// запуск миграции
-docker-compose run --remove-orphans web dotnet ef database update
+# docker-compose run web dotnet ef database update
+
+# jwt
+# dotnet add package Microsoft.Extensions.Identity.Core --version 9.0.9
+# dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+# dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+# docker-compose run web dotnet ef migrations add Identity
