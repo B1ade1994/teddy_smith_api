@@ -8,3 +8,4 @@
 # dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
 # dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 # docker-compose run web dotnet ef migrations add Identity
+

@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// https://www.youtube.com/watch?v=A3tdyk68KAw&list=PL82C6-O4XrHfrGOCPmKmwTO7M0avXyQKc&index=13&ab_channel=TeddySmith
+// https://www.youtube.com/watch?v=lZu9XcZit2Y&list=PL82C6-O4XrHfrGOCPmKmwTO7M0avXyQKc&index=23
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
