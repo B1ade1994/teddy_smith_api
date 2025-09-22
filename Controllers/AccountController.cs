@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using teddy_smith_api.Dtos.Account;
+using teddy_smith_api.Interfaces;
 using teddy_smith_api.Models;
 
 namespace teddy_smith_api.Controllers
@@ -14,10 +15,12 @@ namespace teddy_smith_api.Controllers
   public class AccountController : ControllerBase
   {
     public readonly UserManager<User> _userManager;
+    public readonly ITokenService _tokenService;
 
-    public AccountController(UserManager<User> userManager)
+    public AccountController(UserManager<User> userManager, ITokenService tokenService)
     {
       _userManager = userManager;
+      _tokenService = tokenService;
     }
 
     [HttpPost("register")]
@@ -42,7 +45,14 @@ namespace teddy_smith_api.Controllers
 
           if (roleResult.Succeeded)
           {
-            return Ok("User created");
+            return Ok(
+              new NewUserDto
+              {
+                UserName = user.UserName,
+                Email = user.Email,
+                Token = _tokenService.CreateToken(user)
+              }
+            );
           }
           else
           {
