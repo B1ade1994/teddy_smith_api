@@ -8,13 +8,49 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using teddy_smith_api.Service;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// https://www.youtube.com/watch?v=lZu9XcZit2Y&list=PL82C6-O4XrHfrGOCPmKmwTO7M0avXyQKc&index=23
+// https://www.youtube.com/watch?v=Cxf_CKpZxQY&list=PL82C6-O4XrHfrGOCPmKmwTO7M0avXyQKc&index=25
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+  c.SwaggerDoc("v1", new OpenApiInfo 
+  {
+    Title = "Teddy Smith API",
+    Version = "v1",
+    Description = "API для управления акциями и комментариями"
+  });
+  
+  // Настройка авторизации через Bearer Token
+  c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+  {
+    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+    Name = "Authorization",
+    In = ParameterLocation.Header,
+    Type = SecuritySchemeType.Http,
+    BearerFormat = "JWT",
+    Scheme = "Bearer"
+  });
+  
+  c.AddSecurityRequirement(new OpenApiSecurityRequirement
+  {
+    {
+      new OpenApiSecurityScheme
+      {
+        Reference = new OpenApiReference
+        {
+          Type = ReferenceType.SecurityScheme,
+          Id = "Bearer"
+        }
+      },
+      new string[] {}
+    }
+  });
+});
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
   options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -45,7 +81,7 @@ builder.Services.AddAuthentication(options => {
     ValidAudience = builder.Configuration["JWT:Audience"],
     ValidateIssuerSigningKey = true,
     IssuerSigningKey = new SymmetricSecurityKey(
-      System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
+      System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"] ?? throw new InvalidOperationException("JWT:SigningKey is not configured"))
     )
   };
 });
@@ -64,11 +100,8 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-  app.MapOpenApi();
-  app.UseSwaggerUI(options =>
-  {
-    options.SwaggerEndpoint("/openapi/v1.json", "OpenAPI V1");
-  });
+  app.UseSwagger();
+  app.UseSwaggerUI();
 }
 else
 {

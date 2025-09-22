@@ -9,10 +9,12 @@ using teddy_smith_api.Mappers;
 using teddy_smith_api.Dtos.Stock;
 using teddy_smith_api.Interfaces;
 using teddy_smith_api.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace teddy_smith_api.Controllers
 {
   [Route("api/stocks")]
+  [Authorize]
   [ApiController]
   public class StockController : ControllerBase
   {

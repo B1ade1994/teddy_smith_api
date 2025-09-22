@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using teddy_smith_api.Dtos.Comment;
 using teddy_smith_api.Interfaces;
@@ -10,6 +11,7 @@ using teddy_smith_api.Mappers;
 namespace teddy_smith_api.Controllers
 {
   [Route("api/comments")]
+  [Authorize]
   [ApiController]
   public class CommentController : ControllerBase
   {
