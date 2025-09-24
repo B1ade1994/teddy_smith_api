@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using teddy_smith_api.Dtos.Comment;
+using teddy_smith_api.Extensions;
 using teddy_smith_api.Interfaces;
 using teddy_smith_api.Mappers;
+using teddy_smith_api.Models;
 
 namespace teddy_smith_api.Controllers
 {
@@ -17,11 +20,13 @@ namespace teddy_smith_api.Controllers
   {
     private readonly ICommentRepository _commentRepo;
     private readonly IStockRepository _stockRepo;
+    private readonly UserManager<User> _userManager;
 
-    public CommentController(ICommentRepository commentRepo, IStockRepository stockRepo)
+    public CommentController(ICommentRepository commentRepo, IStockRepository stockRepo, UserManager<User> userManager)
     {
       _commentRepo = commentRepo;
       _stockRepo = stockRepo;
+      _userManager = userManager;
     }
 
     [HttpGet]
@@ -54,7 +59,11 @@ namespace teddy_smith_api.Controllers
       if (!await _stockRepo.StockExists(stockId))
           return BadRequest("Stock does not exists");
 
+      var username = User.GetUsername();
+      var user = await _userManager.FindByNameAsync(username);
+
       var comment = commentDto.ToCommentFromCreate(stockId);
+      comment.UserId = user.Id;
       await _commentRepo.CreateAsync(comment);
 
       return CreatedAtAction(nameof(GetById), new { id = comment.Id }, comment.ToCommentDto());

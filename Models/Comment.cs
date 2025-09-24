@@ -15,5 +15,7 @@ namespace teddy_smith_api.Models
     public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
     public int? StockId { get; set; }
     public Stock? Stock { get; set; }
+    public string UserId { get; set; }
+    public User User { get; set; }
   }
 }

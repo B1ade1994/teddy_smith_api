@@ -12,8 +12,6 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// https://www.youtube.com/watch?v=Cxf_CKpZxQY&list=PL82C6-O4XrHfrGOCPmKmwTO7M0avXyQKc&index=25
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
